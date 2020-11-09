@@ -8,7 +8,7 @@ export default class Search extends React.Component {
 
     onSearch = (event) => {
         event.preventDefault();
-        // TODO: Pass value to callback
+        this.props.onSearch(this.state.term);
     }
 
     render() {

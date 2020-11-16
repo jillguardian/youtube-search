@@ -1,11 +1,11 @@
 import React from 'react';
 import './Suggestions.css';
 
-const Suggestion = ({summary, classes}) => {
+const Suggestion = ({summary, classes, onSelect}) => {
 
     const {author, title, description, thumbnail} = summary;
     return (
-        <div className={`left aligned ${classes} item`}>
+        <div onClick={() => onSelect(summary)} className={`left aligned ${classes} item`}>
             <div className="ui small image">
                 <img src={thumbnail} alt={title}/>
             </div>

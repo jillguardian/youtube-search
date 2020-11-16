@@ -6,7 +6,8 @@ import VideoSuggestions from "./VideoSuggestions";
 export default class App extends React.Component {
 
     state = {
-        videos: []
+        videos: [],
+        selectedVideo: null
     }
 
     onSearch = async term => {
@@ -24,6 +25,10 @@ export default class App extends React.Component {
         });
     }
 
+    onSelect = video => {
+        this.setState({selectedVideo: video});
+    }
+
     render() {
         return (
             <div className="ui container">
@@ -37,7 +42,7 @@ export default class App extends React.Component {
                         <div className="column">
                         </div>
                         <div className="column">
-                            <VideoSuggestions videos={this.state.videos}/>
+                            <VideoSuggestions videos={this.state.videos} onSelect={this.onSelect}/>
                         </div>
                     </div>
                 </div>

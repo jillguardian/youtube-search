@@ -2,7 +2,7 @@ import React from 'react';
 import Suggestion from "./Suggestion";
 import './VideoSuggestions.css';
 
-const VideoSuggestions = ({videos}) => {
+const VideoSuggestions = ({videos, onSelect}) => {
 
     return (
         <div className="ui divided items">
@@ -10,6 +10,7 @@ const VideoSuggestions = ({videos}) => {
                 const {id} = video;
                 return <Suggestion key={id}
                                    summary={video}
+                                   onSelect={onSelect}
                                    classes="video"/>
             })}
         </div>

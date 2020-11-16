@@ -1,6 +1,7 @@
 import React from 'react';
 import Search from "./Search";
 import youtube from "../api/youtube";
+import VideoSuggestions from "./VideoSuggestions";
 
 export default class App extends React.Component {
 
@@ -19,7 +20,7 @@ export default class App extends React.Component {
         })
         const data = response.data;
         this.setState({
-            videos: data.items
+            videos: data.items.map(video => propertiesFrom(video))
         });
     }
 
@@ -32,9 +33,35 @@ export default class App extends React.Component {
                             <Search onSearch={this.onSearch}/>
                         </div>
                     </div>
+                    <div className="row">
+                        <div className="column">
+                        </div>
+                        <div className="column">
+                            <VideoSuggestions videos={this.state.videos}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
     }
 
+}
+
+function propertiesFrom(video) {
+    const {
+        id: {
+            videoId: id
+        },
+        snippet: {
+            channelTitle: channel,
+            title,
+            description,
+            thumbnails: {
+                default: {
+                    url: thumbnail
+                }
+            }
+        }
+    } = video;
+    return {id, channel, title, description, thumbnail};
 }

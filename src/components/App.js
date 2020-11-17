@@ -2,6 +2,7 @@ import React from 'react';
 import Search from "./Search";
 import youtube from "../api/youtube";
 import VideoSuggestions from "./VideoSuggestions";
+import Video from "./Video";
 
 export default class App extends React.Component {
 
@@ -40,6 +41,7 @@ export default class App extends React.Component {
                     </div>
                     <div className="row">
                         <div className="column">
+                            <Video {...this.state.selectedVideo} />
                         </div>
                         <div className="column">
                             <VideoSuggestions videos={this.state.videos} onSelect={this.onSelect}/>
@@ -68,5 +70,12 @@ function propertiesFrom(video) {
             }
         }
     } = video;
-    return {id, channel, title, description, thumbnail};
+    return {
+        id,
+        url: `https://www.youtube.com/embed/${id}`,
+        channel,
+        title,
+        description,
+        thumbnail
+    };
 }

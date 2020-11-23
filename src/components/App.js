@@ -1,17 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Search from "./Search";
 import youtube from "../api/youtube";
 import VideoSuggestions from "./VideoSuggestions";
 import Video from "./Video";
 
-export default class App extends React.Component {
+const App = () => {
 
-    state = {
-        videos: [],
-        selectedVideo: null
-    }
+    const [videos, setVideos] = useState([]);
+    const [selectedVideo, setSelectedVideo] = useState(null);
 
-    onSearch = async term => {
+    const onSearch = async term => {
         const response = await youtube.get('/search', {
             params: {
                 part: 'snippet',
@@ -21,38 +19,33 @@ export default class App extends React.Component {
             }
         })
         const data = response.data;
-        this.setState({
-            videos: data.items.map(video => propertiesFrom(video))
-        });
+        const videos = data.items.map(video => propertiesFrom(video));
+        setVideos(videos);
     }
 
-    onSelect = video => {
-        this.setState({selectedVideo: video});
-    }
-
-    render() {
-        return (
-            <div className="ui container">
-                <div className="ui equal width center aligned padded grid">
-                    <div className="row">
-                        <div className="column">
-                            <Search onSearch={this.onSearch}/>
-                        </div>
+    return (
+        <div className="ui container">
+            <div className="ui equal width center aligned padded grid">
+                <div className="row">
+                    <div className="column">
+                        <Search onSearch={onSearch}/>
                     </div>
-                    <div className="row">
-                        <div className="column">
-                            <Video {...this.state.selectedVideo} />
-                        </div>
-                        <div className="column">
-                            <VideoSuggestions videos={this.state.videos} onSelect={this.onSelect}/>
-                        </div>
+                </div>
+                <div className="row">
+                    <div className="column">
+                        <Video {...selectedVideo} />
+                    </div>
+                    <div className="column">
+                        <VideoSuggestions videos={videos} onSelect={setSelectedVideo}/>
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 
 }
+
+export default App;
 
 function propertiesFrom(video) {
     const {

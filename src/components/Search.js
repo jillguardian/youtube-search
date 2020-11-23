@@ -1,30 +1,27 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-export default class Search extends React.Component {
+export default function Search({onSearch}) {
 
-    state = {
-        term: ''
-    }
-
-    onSearch = (event) => {
+    const [term, setTerm] = useState('');
+    const onSubmit = (event) => {
         event.preventDefault();
-        this.props.onSearch(this.state.term);
+        onSearch(term);
     }
 
-    render() {
-        return (
-            <form onSubmit={this.onSearch}>
+    return (
+        <form onSubmit={onSubmit}>
+            <div className="ui search">
                 <div className="ui icon input">
                     <input
                         className="prompt"
                         type="text"
                         placeholder="Search video..."
-                        onChange={event => this.setState({term: event.target.value})}
-                        value={this.state.term} />
-                    <i className="search icon" />
+                        onChange={event => setTerm(event.target.value)}
+                        value={term}/>
+                    <i className="search icon"/>
                 </div>
-            </form>
-        );
-    }
+            </div>
+        </form>
+    );
 
 }

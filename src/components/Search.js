@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-export default function Search({onSearch}) {
+export default function Search({isLoading = false, onSearch}) {
 
     const [term, setTerm] = useState('');
     const onSubmit = (event) => {
@@ -10,7 +10,7 @@ export default function Search({onSearch}) {
 
     return (
         <form onSubmit={onSubmit}>
-            <div className="ui search">
+            <div className={`ui ${isLoading ? 'loading' : ''} search`}>
                 <div className="ui icon input">
                     <input
                         className="prompt"

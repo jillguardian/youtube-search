@@ -3,17 +3,21 @@ import Search from "./Search";
 import youtube from "../api/youtube";
 import VideoSuggestions from "./VideoSuggestions";
 import Video from "./Video";
+import PlaceholderVideoSuggestions from "./PlaceholderVideoSuggestions";
 
+const MAX_RESULTS = 20;
 const App = () => {
 
+    const [isLoading, setLoading] = useState(false);
     const [videos, setVideos] = useState([]);
     const [selectedVideo, setSelectedVideo] = useState(null);
 
     const onSearch = async term => {
+        setLoading(true);
         const response = await youtube.get('/search', {
             params: {
                 part: 'snippet',
-                maxResults: 20,
+                maxResults: MAX_RESULTS,
                 type: 'video',
                 q: term
             }
@@ -21,6 +25,7 @@ const App = () => {
         const data = response.data;
         const videos = data.items.map(video => propertiesFrom(video));
         setVideos(videos);
+        setLoading(false);
     }
 
     return (
@@ -28,15 +33,20 @@ const App = () => {
             <div className="ui equal width center aligned padded grid">
                 <div className="row">
                     <div className="column">
-                        <Search onSearch={onSearch}/>
+                        <Search isLoading={isLoading} onSearch={onSearch}/>
                     </div>
                 </div>
                 <div className="row">
+                    {selectedVideo && (
+                        <div className="column">
+                            <Video {...selectedVideo} />
+                        </div>
+                    )}
                     <div className="column">
-                        <Video {...selectedVideo} />
-                    </div>
-                    <div className="column">
-                        <VideoSuggestions videos={videos} onSelect={setSelectedVideo}/>
+                        {isLoading ?
+                            <PlaceholderVideoSuggestions count={MAX_RESULTS}/> :
+                            <VideoSuggestions videos={videos} onSelect={setSelectedVideo}/>
+                        }
                     </div>
                 </div>
             </div>

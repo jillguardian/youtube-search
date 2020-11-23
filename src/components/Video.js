@@ -36,7 +36,7 @@ const Video = ({url, title, description}) => {
     return (
         <div>
             <div className="ui embed">
-                <iframe src={url}/>
+                <iframe src={url} title={title}/>
             </div>
             <div className="ui left aligned segment">
                 <div className="ui large header">{title}</div>
